@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .background(color = MaterialTheme.colorScheme.background)
                 ) {
-                    val viewModel by viewModels<MainViewModel>()
                     navGraph(
                         startDestination = viewModel.startDestination
                     )

@@ -1,5 +1,6 @@
 package com.example.fakestorecompose.data.remote.repository
 
+import android.util.Log
 import com.example.fakestorecompose.data.remote.DefaultApiService
 import com.example.fakestorecompose.data.remote.dto.DefaultApi
 import com.example.fakestorecompose.domain.repository.DefaultRepository

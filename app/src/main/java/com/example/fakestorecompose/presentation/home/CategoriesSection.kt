@@ -1,12 +1,14 @@
 package com.example.fakestorecompose.presentation.home
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,12 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.fakestorecompose.R
@@ -30,6 +34,7 @@ import com.example.fakestorecompose.domain.model.ItemX
 import com.example.fakestorecompose.presentation.Dimens.CategoryItemCardSize
 import com.example.fakestorecompose.presentation.Dimens.ExtraSmallPadding2
 import com.example.fakestorecompose.ui.theme.FakeStoreComposeTheme
+import com.example.fakestorecompose.ui.theme.Roboto
 
 @Composable
 fun CategoriesSection(
@@ -39,9 +44,9 @@ fun CategoriesSection(
 ) {
 
     LazyRow(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(all = ExtraSmallPadding2)
+        contentPadding = PaddingValues(15.dp)
     ) {
         items(count = data.size) {
             val category = data[it]
@@ -66,7 +71,8 @@ fun CategoryItem(
         AsyncImage(
             modifier = Modifier
                 .size(CategoryItemCardSize)
-                .clip(CircleShape),
+                .clip(CircleShape)
+                .border(2.dp, Color.Black, CircleShape),
             model = ImageRequest.Builder(context).data(category.image).build(),
             contentDescription = "Category Image",
             contentScale = ContentScale.Crop
@@ -75,7 +81,9 @@ fun CategoryItem(
         Text(
             modifier = Modifier,
             text = category.title,
+            fontSize = 12.sp,
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
+            fontFamily = Roboto,
             color = colorResource(id = R.color.body)
         )
     }

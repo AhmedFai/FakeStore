@@ -32,7 +32,9 @@ object DefaultApiModule {
     @Singleton
     @Provides
     @Named("defaultApiService")
-    fun provideApiService2(@Named("defaultApi") retrofit: Retrofit): DefaultApiService {
+    fun provideApiService2(
+        @Named("defaultApi") retrofit: Retrofit
+    ): DefaultApiService {
         return retrofit.create(DefaultApiService::class.java)
     }
 

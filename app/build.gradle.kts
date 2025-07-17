@@ -109,4 +109,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.2")
+    implementation(libs.androidx.material.icons.extended)
 }

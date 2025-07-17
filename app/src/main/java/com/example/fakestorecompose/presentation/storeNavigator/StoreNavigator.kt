@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -22,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,10 +37,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.fakestorecompose.R
+import com.example.fakestorecompose.domain.model.ProductsItem
+import com.example.fakestorecompose.presentation.details.DetailsScreen
 import com.example.fakestorecompose.presentation.home.DefaultApiViewModel
 import com.example.fakestorecompose.presentation.home.HomeScreen
+import com.example.fakestorecompose.presentation.home.common.CustomToolbar
+import com.example.fakestorecompose.presentation.home.common.ToolbarAction
 import com.example.fakestorecompose.presentation.navGraph.Route
-import com.example.fakestorecompose.presentation.navGraph.storeGraph
 import com.example.fakestorecompose.presentation.storeNavigator.component.StoreBottomNavigation
 import com.example.fakestorecompose.presentation.storeNavigator.component.StoreBottomNavigationItem
 
@@ -79,10 +86,24 @@ fun StoreNavigator(){
             currentRoute == Route.CartScreen.routeName ||
             currentRoute == Route.ProfileScreen.routeName
 
+    val isBottomTab = currentRoute in listOf(
+        Route.HomeScreen.routeName,
+        Route.CategoryScreen.routeName,
+        Route.WishlistScreen.routeName,
+        Route.CartScreen.routeName,
+        Route.ProfileScreen.routeName
+    )
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBar(title = bottomNavigationItems[selectedItem].text)
+            if (isBottomTab){
+                CustomToolbar(
+                    title = bottomNavigationItems[selectedItem].text,
+                    showBackButton = false,
+                    actions = getToolbarActionsForRoute(currentRoute)
+                )
+            }
         },
         bottomBar = {
             if (isBottomBarVisible) {
@@ -124,8 +145,7 @@ fun StoreNavigator(){
         val bottomPadding = innerPadding.calculateBottomPadding()
         NavHost(
             navController = navController,
-            startDestination = Route.HomeScreen.routeName,
-            modifier = Modifier.padding(bottom = bottomPadding)
+            startDestination = Route.HomeScreen.routeName
         ) {
             //storeGraph(navController)
             composable(Route.HomeScreen.routeName){
@@ -143,18 +163,15 @@ fun StoreNavigator(){
 //                                navController = navController,
 //                                route = Route.CategoryScreen
 //                            )
+                        },
+                        navigateToDetails = {
+                            navigateToDetails(
+                                navController = navController,
+                                product = it
+                            )
                         }
                     )
                 }
-
-//                Box(modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center) {
-//                    Text(text = "Home Screen",
-//                        fontSize = 24.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        color = Color.White
-//                    )
-//                }
             }
 
             composable(Route.CategoryScreen.routeName){
@@ -184,12 +201,13 @@ fun StoreNavigator(){
                 }
             }
             composable(Route.ProductDetailScreen.routeName){
-                Box(modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center) {
-                    Text(text = "Product Details Screen",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold)
-                }
+                navController.previousBackStackEntry?.savedStateHandle?.get<ProductsItem>("product")
+                    ?.let { product ->
+                        DetailsScreen(
+                            product,
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
             }
             composable(Route.CartScreen.routeName){
                 Box(modifier = Modifier.fillMaxSize(),
@@ -239,5 +257,28 @@ private fun navigateToTab(navController: NavController, route: Route) {
             restoreState = true
             launchSingleTop = true
         }
+    }
+}
+
+
+private fun navigateToDetails(navController: NavController, product: ProductsItem) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("product", product)
+    navController.navigate(
+        route = Route.ProductDetailScreen.routeName
+    )
+}
+
+fun getToolbarActionsForRoute(route: String?): List<ToolbarAction> {
+    return when (route) {
+        Route.HomeScreen.routeName -> listOf(
+            ToolbarAction(Icons.Default.Search, "Search", onClick = {}),
+            ToolbarAction(Icons.Default.Notifications, "Notifications", onClick = {}),
+            ToolbarAction(Icons.Default.ShoppingCart, "Cart", onClick = {})
+        )
+
+        Route.CategoryScreen.routeName -> listOf(
+            ToolbarAction(Icons.Default.FavoriteBorder, "Cart", onClick = {})
+        )
+        else -> emptyList()
     }
 }

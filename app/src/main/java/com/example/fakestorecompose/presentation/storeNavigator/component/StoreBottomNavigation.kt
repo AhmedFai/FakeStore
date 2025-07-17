@@ -36,6 +36,8 @@ import com.example.fakestorecompose.R
 import com.example.fakestorecompose.presentation.Dimens.ExtraSmallPadding2
 import com.example.fakestorecompose.presentation.Dimens.IconSize
 import com.example.fakestorecompose.ui.theme.FakeStoreComposeTheme
+import com.example.fakestorecompose.ui.theme.Roboto
+import com.example.fakestorecompose.ui.theme.Rubik
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -78,7 +80,8 @@ fun StoreBottomNavigation(
                     Text(
                         text = item.text,
                         color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray,
-                        fontSize = 12.sp
+                        fontSize = 13.sp,
+                        fontFamily = Roboto
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(

@@ -1,5 +1,6 @@
 package com.example.fakestorecompose.presentation.onboarding
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fakestorecompose.domain.usecases.appentry.AppEntryUseCases
@@ -14,7 +15,7 @@ class OnBoardingViewModel @Inject constructor(
 
     fun onEvent(event: OnBoardingEvent) {
         when (event) {
-            is OnBoardingEvent.saveAppEntry -> {
+            is OnBoardingEvent.SaveAppEntry -> {
                 saveAppEntry()
             }
         }

@@ -1,9 +1,13 @@
 package com.example.fakestorecompose.domain.model
 
+
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
 @Entity(tableName = "products")
 data class ProductsItem(
     @PrimaryKey(autoGenerate = true)
@@ -14,12 +18,4 @@ data class ProductsItem(
     val price: Double,
     val rating: Rating,
     val title: String
-) : Serializable {
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        if(image.isEmpty()){
-            result = 31 * result + image.hashCode()
-        }
-        return result
-    }
-}
+) : Parcelable
