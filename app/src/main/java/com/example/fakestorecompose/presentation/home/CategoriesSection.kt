@@ -35,6 +35,7 @@ import com.example.fakestorecompose.presentation.Dimens.CategoryItemCardSize
 import com.example.fakestorecompose.presentation.Dimens.ExtraSmallPadding2
 import com.example.fakestorecompose.ui.theme.FakeStoreComposeTheme
 import com.example.fakestorecompose.ui.theme.Roboto
+import com.example.fakestorecompose.ui.theme.dimens
 
 @Composable
 fun CategoriesSection(
@@ -46,7 +47,7 @@ fun CategoriesSection(
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(15.dp)
+        contentPadding = PaddingValues(MaterialTheme.dimens.small1)
     ) {
         items(count = data.size) {
             val category = data[it]

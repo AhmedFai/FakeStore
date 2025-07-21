@@ -51,6 +51,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,6 +69,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.fakestorecompose.R
@@ -81,9 +83,10 @@ import kotlin.math.roundToInt
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DetailsScreen(
-    product: ProductsItem,
+    viewModel: ProductDetailsViewModel = hiltViewModel(),
     navigateUp: () -> Unit
 ) {
+    val product by viewModel.product.collectAsState()
 
     val imageHeight = 300.dp
     val imageHeightPx = with(LocalDensity.current) { imageHeight.roundToPx().toFloat() }
@@ -117,17 +120,17 @@ fun DetailsScreen(
 
             item {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = product.title, style = MaterialTheme.typography.titleLarge)
+                    product?.let { Text(text = it.title, style = MaterialTheme.typography.titleLarge) }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = product.description ?: "",
+                        text = product?.description ?: "",
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(18.dp))
                     Text(text = "Price", style = MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "$" + product.price, style = MaterialTheme.typography.bodyMedium,fontSize = 16.sp)
+                    Text(text = "$" + product?.price, style = MaterialTheme.typography.bodyMedium,fontSize = 16.sp)
                     Spacer(modifier = Modifier.height(30.dp))
                     Text(text = "Size", style = MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.height(8.dp))
@@ -155,6 +158,7 @@ fun DetailsScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(top = 20.dp, bottom = 20.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .background(Color.LightGray),
                         contentAlignment = Alignment.Center
@@ -170,7 +174,7 @@ fun DetailsScreen(
         TopAppBar(
             title = {
                 AnimatedVisibility(visible = toolbarAlpha > 0.6f) {
-                    Text(product.title)
+                    product?.let { Text(it.title) }
                 }
             },
             navigationIcon = {

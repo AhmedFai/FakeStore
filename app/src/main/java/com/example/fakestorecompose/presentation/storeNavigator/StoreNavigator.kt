@@ -201,13 +201,11 @@ fun StoreNavigator(){
                 }
             }
             composable(Route.ProductDetailScreen.routeName){
-                navController.previousBackStackEntry?.savedStateHandle?.get<ProductsItem>("product")
-                    ?.let { product ->
+
                         DetailsScreen(
-                            product,
                             navigateUp = { navController.navigateUp() }
                         )
-                    }
+
             }
             composable(Route.CartScreen.routeName){
                 Box(modifier = Modifier.fillMaxSize(),

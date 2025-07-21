@@ -39,6 +39,7 @@ import com.example.fakestorecompose.domain.model.ProductsItem
 import com.example.fakestorecompose.domain.model.Rating
 import com.example.fakestorecompose.presentation.Dimens.MediumPadding1
 import com.example.fakestorecompose.ui.theme.Roboto
+import com.example.fakestorecompose.ui.theme.dimens
 
 @Composable
 fun FeaturedSection(
@@ -48,7 +49,7 @@ fun FeaturedSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .padding(MaterialTheme.dimens.small1)
             .background(color = MaterialTheme.colorScheme.background),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(
